@@ -31,7 +31,8 @@ def train(**config):
 
     # Update the config
     log_root = config['log_root']
-    del config['log_root'], config['config']
+    config['policy_size'] = tuple(config['network_width'] for _ in range(config['network_depth']))
+    del config['log_root'], config['config'], config['network_width'], config['network_depth']
     job_data.update(config)
 
     # Log directory
@@ -62,7 +63,8 @@ if __name__=='__main__':
     ### Hyperparameter setting
     # A dict that specifies the values of hyperparameters to search over.
     hps_dict = dict(
-                env=["kitchen_knob1_on-v3"] #,"kitchen_light_on-v3","kitchen_sdoor_open-v3","kitchen_ldoor_open-v3","kitchen_micro_open-v3"],
+                env=["kitchen_knob1_on-v3", "kitchen_light_on-v3","kitchen_sdoor_open-v3","kitchen_ldoor_open-v3","kitchen_micro_open-v3"],
+                network_width=[32, 128, 256],
                 )
 
     # (optional) A dict that specifies the default values of hyperparameters. This
@@ -72,7 +74,8 @@ if __name__=='__main__':
     config = dict(
             log_root="../results",
             config="hand_dapg/dapg/examples/rl_scratch.txt",
-            seed='randint'
+            seed='randint',
+            network_depth=2,
         )
 
     # (optional) Number of seeds to run per hyperparameter.
