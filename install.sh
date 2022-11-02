@@ -8,7 +8,7 @@ mv mujoco210 ~/.mujoco
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/.mujoco/mujoco210/bin:/usr/lib/nvidia
 ################
 
-pip install -r requirement.txt
+pip install -r requirements.txt
 
 git clone https://github.com/chinganc/mjrl.git
 cd mjrl
@@ -19,6 +19,7 @@ cd ..
 git clone --branch v0.0.5 --recursive https://github.com/vikashplus/mj_envs.git
 cd mj_envs
 # pip install -e .
+echo Try to install $PWD
 export PYTHONPATH=$PYTHONPATH:$PWD
 cd ..
 
