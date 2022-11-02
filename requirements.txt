@@ -1,0 +1,14 @@
+ click
+ cloudpickle
+ gym==0.13
+ ipdb
+ matplotlib
+ mujoco-py
+ pip
+ pyyaml
+ tqdm
+ wheel
+ scipy
+ transforms3d
+ tabulate
+ patchelf

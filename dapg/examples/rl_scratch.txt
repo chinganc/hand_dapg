@@ -2,7 +2,7 @@
 
 # general inputs
 
-'env'           :   'relocate-v0',
+'env'           :   "kitchen_light_on-v3",  #"kitchen_knob1_on-v3", #"kitchen_light_on-v3","kitchen_sdoor_open-v3","kitchen_ldoor_open-v3","kitchen_micro_open-v3"
 'algorithm'     :   'NPG',
 'seed'          :   123,
 'num_cpu'       :   5,

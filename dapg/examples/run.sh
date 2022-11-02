@@ -1,0 +1,1 @@
+python job_script.py --output rl_scratch_exp --config rl_scratch.txt
