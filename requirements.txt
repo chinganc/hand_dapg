@@ -12,3 +12,4 @@
  transforms3d
  tabulate
  patchelf
+ termcolor
