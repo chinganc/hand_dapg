@@ -18,7 +18,8 @@ cd ..
 
 git clone --branch v0.0.5 --recursive https://github.com/vikashplus/mj_envs.git
 cd mj_envs
-pip install -e .
+# pip install -e .
+export PYTHONPATH=$PYTHONPATH:$PWD
 cd ..
 
 pip install torch==1.7.1
