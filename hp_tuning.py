@@ -15,33 +15,18 @@ def train(**config):
     """A wrapper to call the main function.
     config: a dict of desired hp values.
     """
-    # import sys
-    # code_paths = os.path.dirname(__file__)
-    # sys.path.append(code_paths)
     import os, json
     from rl_nexus.hand_dapg.dapg.examples.job_script import main
 
-
     with open(config['config'], 'r') as f:
         job_data = eval(f.read())
-    assert 'algorithm' in job_data.keys()
-    assert any([job_data['algorithm'] == a for a in ['NPG', 'BCRL', 'DAPG']])
-    job_data['lam_0'] = 0.0 if 'lam_0' not in job_data.keys() else job_data['lam_0']
-    job_data['lam_1'] = 0.0 if 'lam_1' not in job_data.keys() else job_data['lam_1']
 
     # Update the config
     log_root = config['log_root']
     config['policy_size'] = tuple(config['network_width'] for _ in range(config['network_depth']))
     del config['log_root'], config['config'], config['network_width'], config['network_depth']
     job_data.update(config)
-
-    # Log directory
     JOB_DIR = os.path.join(log_root, job_data['env']+'_'+str(job_data['seed']))
-    if not os.path.exists(JOB_DIR):
-        os.mkdir(JOB_DIR)
-    EXP_FILE = JOB_DIR + '/job_config.json'
-    with open(EXP_FILE, 'w') as f:
-        json.dump(job_data, f, indent=4)
 
     return main(JOB_DIR, job_data)
 
@@ -56,6 +41,7 @@ if __name__=='__main__':
     'git clone https://github.com/chinganc/hand_dapg.git',
     'cd hand_dapg',
     'bash install.sh',
+    'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/root/.mujoco/mujoco210/bin',
     'cd ..',  # back to rl_nexus
     'cd ../',  # back to dilbert
     ]
@@ -85,7 +71,7 @@ if __name__=='__main__':
     compute_target='azb-cpu' # Name of the compute resource.
     docker_image='mujoco' # Name of the Docker image.
     azure_service='dilbertbatch'
-    max_n_nodes=1 # Maximal number of nodes to launch in the job.
+    max_n_nodes=100 # Maximal number of nodes to launch in the job.
     max_total_runs=3000 # Maximal number of runs in the job.
     # n_sequential_runs_per_node=1  # Number of sequential runs per node.
     # n_concurrent_runs_per_node=1  # Number of concurrent runs per node.

@@ -17,9 +17,8 @@ cd ..
 
 
 git clone --branch v0.0.5 --recursive https://github.com/vikashplus/mj_envs.git
-cd mj_envs  # pip install -e .
-echo Try to install $PWD
-export PYTHONPATH=$PYTHONPATH:$PWD
+cd mj_envs
+pip install -e . --no-dependencies
 cd ..
 
 pip install torch==1.7.1

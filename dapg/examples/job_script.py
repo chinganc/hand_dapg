@@ -22,15 +22,29 @@ import pickle
 import argparse
 
 
-# ===============================================================================
-# Train Loop
-# ===============================================================================
+
 
 def main(JOB_DIR, job_data):
+    # Initialization
+    if not os.path.exists(JOB_DIR):
+        os.mkdir(JOB_DIR)
+
+    assert 'algorithm' in job_data.keys()
+    assert any([job_data['algorithm'] == a for a in ['NPG', 'BCRL', 'DAPG']])
+    job_data['lam_0'] = 0.0 if 'lam_0' not in job_data.keys() else job_data['lam_0']
+    job_data['lam_1'] = 0.0 if 'lam_1' not in job_data.keys() else job_data['lam_1']
+    EXP_FILE = JOB_DIR + '/job_config.json'
+    with open(EXP_FILE, 'w') as f:
+        json.dump(job_data, f, indent=4)
+
     e = GymEnv(job_data['env'])
     policy = MLP(e.spec, hidden_sizes=job_data['policy_size'], seed=job_data['seed'])
     baseline = MLPBaseline(e.spec, reg_coef=1e-3, batch_size=job_data['vf_batch_size'],
                         epochs=job_data['vf_epochs'], learn_rate=job_data['vf_learn_rate'])
+
+    # ===============================================================================
+    # Train Loop
+    # ===============================================================================
 
     # Get demonstration data if necessary and behavior clone
     if job_data['algorithm'] != 'NPG':
@@ -101,16 +115,6 @@ if __name__=='__main__':
     parser.add_argument('--config', type=str, required=True, help='path to config file with exp params')
     args = parser.parse_args()
     JOB_DIR = args.output
-    if not os.path.exists(JOB_DIR):
-        os.mkdir(JOB_DIR)
     with open(args.config, 'r') as f:
         job_data = eval(f.read())
-    assert 'algorithm' in job_data.keys()
-    assert any([job_data['algorithm'] == a for a in ['NPG', 'BCRL', 'DAPG']])
-    job_data['lam_0'] = 0.0 if 'lam_0' not in job_data.keys() else job_data['lam_0']
-    job_data['lam_1'] = 0.0 if 'lam_1' not in job_data.keys() else job_data['lam_1']
-    EXP_FILE = JOB_DIR + '/job_config.json'
-    with open(EXP_FILE, 'w') as f:
-        json.dump(job_data, f, indent=4)
-
     main(JOB_DIR, job_data)
