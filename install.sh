@@ -16,7 +16,9 @@ pip install -e .
 cd ..
 
 
-git clone --branch v0.0.5 --recursive https://github.com/vikashplus/mj_envs.git
+# git clone --branch v0.0.5 --recursive https://github.com/vikashplus/mj_envs.git
+
+git clone --branch franka_kitchen --recursive https://github.com/chinganc/mj_envs
 cd mj_envs
 pip install -e . --no-dependencies
 cd ..

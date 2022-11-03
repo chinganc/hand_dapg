@@ -50,7 +50,6 @@ if __name__=='__main__':
     # A dict that specifies the values of hyperparameters to search over.
     hps_dict = dict(
                 env=["kitchen_knob1_on-v3", "kitchen_light_on-v3","kitchen_sdoor_open-v3","kitchen_ldoor_open-v3","kitchen_micro_open-v3"],
-                network_width=[32, 128, 256],
                 )
 
     # (optional) A dict that specifies the default values of hyperparameters. This
@@ -62,15 +61,18 @@ if __name__=='__main__':
             config="hand_dapg/dapg/examples/rl_scratch.txt",
             seed='randint',
             network_depth=2,
+            network_width=32,
+            rl_num_iter=1000,
         )
 
     # (optional) Number of seeds to run per hyperparameter.
-    n_seeds_per_hp=3
+    n_seeds_per_hp=20
 
     ### (optional) Compute resources
     compute_target='azb-cpu' # Name of the compute resource.
     docker_image='mujoco' # Name of the Docker image.
     azure_service='dilbertbatch'
+    vm_size='Standard_F16s_v2'
     max_n_nodes=100 # Maximal number of nodes to launch in the job.
     max_total_runs=3000 # Maximal number of runs in the job.
     # n_sequential_runs_per_node=1  # Number of sequential runs per node.
@@ -90,4 +92,5 @@ if __name__=='__main__':
                 azure_service=azure_service,
                 max_n_nodes=max_n_nodes,
                 max_total_runs=max_total_runs,
-                remote_run=remote_run)
+                remote_run=remote_run,
+                vm_size=vm_size)
